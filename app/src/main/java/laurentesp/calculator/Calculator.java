@@ -45,8 +45,30 @@ public class Calculator {
                 curOperand = 1;
                 stringBufOut.append("0");
                 operator.setLength(0);
-                operator.append("Add");
+                operator.append("addFunction");
                 break;
+
+            case "-":
+                curOperand = 1;
+                stringBufOut.append("0");
+                operator.setLength(0);
+                operator.append("minusFunction");
+                break;
+
+            case "x":
+                curOperand = 1;
+                stringBufOut.append("0");
+                operator.setLength(0);
+                operator.append("multFunction");
+                break;
+
+            case "/":
+                curOperand = 1;
+                stringBufOut.append("0");
+                operator.setLength(0);
+                operator.append("divFunction");
+                break;
+
 
             case "=":
                 curOperand = 0;
@@ -54,6 +76,22 @@ public class Calculator {
                 stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(),valOperand2.toString(),operator.toString()));
                 valOperand1.setLength(0);
                 valOperand2.setLength(0);
+                break;
+
+            case ".":
+                // if there is no character already typed before a point we have to a 0 before the point
+                if (stringInTextView == "0") {
+                    stringBufOut.append("0");
+                    stringBufOut.append(stringIn);
+                } else {
+                    // There can't be two points in Double
+                    if (!(stringInTextView.contains("."))){
+                        stringBufOut.append(stringInTextView);
+                        stringBufOut.append(stringIn);
+                    } else {
+                        stringBufOut.append(stringInTextView);
+                    }
+                }
                 break;
 
             default:
@@ -91,8 +129,11 @@ public class Calculator {
         double valOperand2 = Double.valueOf(operand2);
         double valOut = 0;
         switch (operator) {
-            case "Add":
-                valOut = valOperand1+valOperand2;
+            case "addFunction":
+                valOut = valOperand1 + valOperand2;
+                break;
+            case "minusFunction":
+                valOut = valOperand1 - valOperand2;
                 break;
             default:
                 valOut = valOperand1;

@@ -18,21 +18,36 @@ public class ExampleUnitTest {
 
     @Test
     public void shouldReturnTrueIfTheResultOfAddMethodIsOK() throws Exception {
-        assertEquals("3", getResultFromOperatorOnOperands("2","1","Add"));
+        assertEquals("3", getResultFromOperatorOnOperands("2","1","addFunction"));
     }
 
     @Test
-    public void shouldReturnFalseIfTheResultOfAddMethodIsOK() throws Exception {
-        assertNotEquals("5.0", getResultFromOperatorOnOperands("2","1","Add"));
+    public void shouldReturnFalseIfTheResultOfAddMethodIsNOK() throws Exception {
+        assertNotEquals("5.0", getResultFromOperatorOnOperands("2","1","addFunction"));
     }
 
     @Test
-    public void shouldReturnTrueIfCanRemoveFractionnalPart() throws Exception {
+    public void shouldReturnTrueIfCanRemoveFractionalPart() throws Exception {
         assertEquals("0", removeFractionalPartFromDoubleIfNotNecessary(0.0));
     }
 
     @Test
     public void shouldReturnTrueIfShouldNotRemoveFractionnalPart() throws Exception {
         assertEquals("0.1", removeFractionalPartFromDoubleIfNotNecessary(0.1));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfMinusMethodIsPositiveAndOK() throws Exception {
+        assertEquals("3", getResultFromOperatorOnOperands("4","1","minusFunction"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfMinusMethodIsNegativeAndOK() throws Exception {
+        assertEquals("-3", getResultFromOperatorOnOperands("1","4","minusFunction"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfMinusMethodIsFractionalAndOK() throws Exception {
+        assertEquals("40.2", getResultFromOperatorOnOperands("45.2","5","minusFunction"));
     }
 }

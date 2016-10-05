@@ -17,6 +17,12 @@ public class Calculator {
     static int curOperand = 0;
     static StringBuffer operator = new StringBuffer("");
 
+    // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new number is chosen
+    private static boolean takeStringIn = true;
+
+    private static void setTakeStringIn(boolean takeStringIn) {
+        takeStringIn = takeStringIn;
+    }
 
     static String getValOutToShowtoUser(String stringIn, String stringInTextView) {
         StringBuffer stringBufOut = new StringBuffer("");
@@ -32,27 +38,31 @@ public class Calculator {
 
             case "+":
                 prepareOperator("addFunction");
-                stringBufOut.append("0");
+                stringBufOut.append(stringInTextView);
                 break;
 
             case "-":
                 prepareOperator("minusFunction");
-                stringBufOut.append("0");
+                stringBufOut.append(stringInTextView);
                 break;
 
             case "x":
                 prepareOperator("multFunction");
-                stringBufOut.append("0");
+                stringBufOut.append(stringInTextView);
                 break;
 
             case "/":
                 prepareOperator("divFunction");
-                stringBufOut.append("0");
+                stringBufOut.append(stringInTextView);
                 break;
 
             case "=":
                 curOperand = 0;
                 stringBufOut.setLength(0);
+                if (valOperand2.length() == 0) {
+                    // in case of the user click on an operator and equals just after, we have to clone the first operand
+                    valOperand2 = valOperand1;
+                }
                 stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(),valOperand2.toString(),operator.toString()));
                 valOperand1 = stringBufOut;
                 break;
@@ -74,13 +84,15 @@ public class Calculator {
                 break;
 
             default:
-                // The default case is for 1..9 buttons / Only requirement, if a 0 has been entered previously we won't show it
-                if (stringInTextView.equals("0")) {
+                // The default case is for 0..9 buttons / Only requirement, if a 0 has been entered previously we won't show it
+                if ((stringInTextView.equals("0")) || (!(takeStringIn))) {
                     stringBufOut.append(stringIn);
                 } else {
                     stringBufOut.append(stringInTextView);
                     stringBufOut.append(stringIn);
                 }
+
+                takeStringIn = true;
 
                 if (curOperand == 0) {
                     valOperand1 = stringBufOut;
@@ -157,6 +169,7 @@ public class Calculator {
         curOperand = 1;
         operator.setLength(0);
         operator.append(functionName);
+        takeStringIn = false;
     }
 
 }

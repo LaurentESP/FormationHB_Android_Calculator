@@ -60,4 +60,19 @@ public class ExampleUnitTest {
     public void shouldReturnTrueIfTheResultOfMultMethodIsFractionalNegAndOK() throws Exception {
         assertEquals("-20", getResultFromOperatorOnOperands("4","-5","multFunction"));
     }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfDivMethodIsFractionalAndOK() throws Exception {
+        assertEquals("4", getResultFromOperatorOnOperands("20","5","divFunction"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfDivMethodIsFractionalNegAndOK() throws Exception {
+        assertEquals("-5", getResultFromOperatorOnOperands("20","-4","divFunction"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfDivMethodIsErrorWhenDivideByZero() throws Exception {
+        assertEquals("Error can't divide by zero", getResultFromOperatorOnOperands("4","0","divFunction"));
+    }
 }

@@ -78,8 +78,7 @@ public class Calculator {
                 curOperand = 0;
                 stringBufOut.setLength(0);
                 stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(),valOperand2.toString(),operator.toString()));
-                valOperand1.setLength(0);
-                valOperand2.setLength(0);
+                valOperand1 = stringBufOut;
                 break;
 
             case ".":
@@ -132,6 +131,8 @@ public class Calculator {
         double valOperand1 =  Double.valueOf(operand1);
         double valOperand2 = Double.valueOf(operand2);
         double valOut = 0;
+        boolean errorOnOperation = false;
+        String stringOut;
         switch (operator) {
             case "addFunction":
                 valOut = valOperand1 + valOperand2;
@@ -142,10 +143,23 @@ public class Calculator {
             case "multFunction":
                 valOut = valOperand1 * valOperand2;
                 break;
+            case "divFunction":
+                if (valOperand2 == 0) {
+                    errorOnOperation = true;
+                } else {
+                    valOut = valOperand1 / valOperand2;
+                }
+                break;
             default:
                 valOut = valOperand1;
         }
-        return removeFractionalPartFromDoubleIfNotNecessary(valOut);
+
+        if (errorOnOperation) {
+            stringOut = new String("Error can't divide by zero");
+        } else {
+            stringOut = new String(removeFractionalPartFromDoubleIfNotNecessary(valOut));
+        }
+        return stringOut;
     }
 
     static String removeFractionalPartFromDoubleIfNotNecessary(double valIn){

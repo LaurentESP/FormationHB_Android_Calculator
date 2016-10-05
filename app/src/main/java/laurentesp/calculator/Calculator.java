@@ -38,7 +38,11 @@ public class Calculator {
                     stringBufOut.append(stringInTextView);
                     stringBufOut.append(stringIn);
                 }
-
+                if (curOperand == 0) {
+                    valOperand1 = stringBufOut;
+                } else {
+                    valOperand2 = stringBufOut;
+                }
                 break;
 
             case "+":
@@ -84,7 +88,7 @@ public class Calculator {
                     stringBufOut.append("0");
                     stringBufOut.append(stringIn);
                 } else {
-                    // There can't be two points in Double
+                    // There can't be two points in a Double
                     if (!(stringInTextView.contains("."))){
                         stringBufOut.append(stringInTextView);
                         stringBufOut.append(stringIn);
@@ -134,6 +138,9 @@ public class Calculator {
                 break;
             case "minusFunction":
                 valOut = valOperand1 - valOperand2;
+                break;
+            case "multFunction":
+                valOut = valOperand1 * valOperand2;
                 break;
             default:
                 valOut = valOperand1;

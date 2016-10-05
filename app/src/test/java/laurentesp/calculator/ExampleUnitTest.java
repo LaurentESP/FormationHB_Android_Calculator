@@ -50,4 +50,14 @@ public class ExampleUnitTest {
     public void shouldReturnTrueIfTheResultOfMinusMethodIsFractionalAndOK() throws Exception {
         assertEquals("40.2", getResultFromOperatorOnOperands("45.2","5","minusFunction"));
     }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfMultMethodIsFractionalAndOK() throws Exception {
+        assertEquals("20.5", getResultFromOperatorOnOperands("2.05","10","multFunction"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfTheResultOfMultMethodIsFractionalNegAndOK() throws Exception {
+        assertEquals("-20", getResultFromOperatorOnOperands("4","-5","multFunction"));
+    }
 }

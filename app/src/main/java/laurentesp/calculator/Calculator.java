@@ -1,8 +1,5 @@
 package laurentesp.calculator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by SOEOSSA on 04/10/2016.
  */
@@ -22,16 +19,20 @@ public class Calculator {
     // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new operand is written
     private static boolean takeStringIn = true;
 
-    public static final String errorString = "Error can't divide by zero";
+    // This attribute is used to determine if an operator has already been chosen
+    private static boolean operatorJustChosen = false;
+
+    // Attribute used to clear the calculation after an equals if no operator chosen just after the equals
+    private static boolean equalsWaitingForNewOperator = false;
+
+    private static final String errorString = "Error can't divide by zero";
 
     static String getValOutToShowtoUser(String stringIn, String stringInTextView) {
         StringBuffer stringBufOut = new StringBuffer("");
         switch (stringIn) {
             // The "C" button is used to clear the 2 operands and the operator
             case "C":
-                valOperand1.setLength(0);
-                valOperand2.setLength(0);
-                curOperand = 0; // Go Back to first operand
+                clearOperator();
                 stringBufOut.setLength(0);
                 stringBufOut.append("0");
                 break;
@@ -61,13 +62,15 @@ public class Calculator {
                 }
                 stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
                 valOperand1 = stringBufOut;
+                equalsWaitingForNewOperator = true;
                 break;
 
             case ".":
                 // If there is no character already typed before a point we have to put a 0 before the point
-                if (stringInTextView.equals("0")) {
+                if ((stringInTextView.equals("0")) || (equalsWaitingForNewOperator)) {
                     stringBufOut.append("0");
                     stringBufOut.append(stringIn);
+                    equalsWaitingForNewOperator = false;
                 } else {
                     // There can't be two points in a Double
                     if (!(stringInTextView.contains("."))) {
@@ -80,15 +83,19 @@ public class Calculator {
                 break;
 
             default:
-                // The default case is for 0..9 buttons / Only requirement, if a 0 has been entered previously we won't show it
-                if ((stringInTextView.equals("0")) || (!(takeStringIn))) {
+                // The default case is for 0..9 buttons
+                // Requirement, if a 0 has been entered previously we won't show it
+                // If flag takeStringIn is false, this means that we should not show the stringIn
+                if ((stringInTextView.equals("0")) || (!(takeStringIn)) || (equalsWaitingForNewOperator)) {
                     stringBufOut.append(stringIn);
+                    equalsWaitingForNewOperator = false;
                 } else {
                     stringBufOut.append(stringInTextView);
                     stringBufOut.append(stringIn);
                 }
 
                 takeStringIn = true;
+                operatorJustChosen = false;
 
                 if (curOperand == 0) {
                     valOperand1 = stringBufOut;
@@ -121,8 +128,18 @@ public class Calculator {
         if ((operand1.equals(errorString)) || (operand2.equals(errorString))) {
             errorOnOperation = true;
         } else {
-            valOperand1 = Double.valueOf(operand1);
-            valOperand2 = Double.valueOf(operand2);
+
+            if (operand1.length() == 0) {
+                valOperand1 = 0;
+            } else {
+                valOperand1 = Double.valueOf(operand1);
+            }
+
+            if (operand2.length() == 0) {
+                valOperand2 = 0;
+            } else {
+                valOperand2 = Double.valueOf(operand2);
+            }
 
             switch (operator) {
                 case "addFunction":
@@ -149,30 +166,22 @@ public class Calculator {
         if (errorOnOperation) {
             stringOut = errorString;
         } else {
-            stringOut = new String(removeFractionalPartFromDoubleIfNotNecessary(valOut));
+            stringOut = removeFractionalPartFromDoubleIfNotNecessary(valOut);
         }
         return stringOut;
     }
 
     static String removeFractionalPartFromDoubleIfNotNecessary(double valIn) {
-        double fractionalPart = valIn % 1;
-        double integralPart = valIn - fractionalPart;
-        int intPart = (int) integralPart;
         String valOut;
-
-        if ((valIn - integralPart) != 0.0) {
-            valOut = new String(Double.toString(valIn));
-        } else {
-            valOut = new String(Integer.toString(intPart));
-        }
+        valOut = Double.toString(valIn).replaceAll("\\.0*$", "");
         return valOut;
     }
 
 
-    static StringBuffer prepareOperator(String stringInTextView, String functionName) {
+    private static StringBuffer prepareOperator(String stringInTextView, String functionName) {
         StringBuffer stringBufOut = new StringBuffer("");
         // Test if we are already entered the second operand, in this case we have to show the result of the first operation
-        if (curOperand == 1) {
+        if ((curOperand == 1) && (!(operatorJustChosen))) {
             stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
             valOperand1 = stringBufOut;
         } else {
@@ -184,10 +193,17 @@ public class Calculator {
 
         operator.setLength(0);
         operator.append(functionName);
+        operatorJustChosen = true;
 
         // Put this flag to false will make a reset on the display when the user will enter the next operand
         takeStringIn = false;
         return stringBufOut;
+    }
+
+    private static void clearOperator() {
+        valOperand1.setLength(0);
+        valOperand2.setLength(0);
+        curOperand = 0; // Go Back to first operand
     }
 
 

@@ -75,4 +75,26 @@ public class ExampleUnitTest {
     public void shouldReturnTrueIfTheResultOfDivMethodIsErrorWhenDivideByZero() throws Exception {
         assertEquals("Error can't divide by zero", getResultFromOperatorOnOperands("4","0","divFunction"));
     }
+
+    @Test
+    public void shouldReturnTrueIfGetValOutToShowtoUserMethodRemovesZeroBeforeNumber() throws Exception {
+        assertEquals("4", getValOutToShowtoUser("4","0"));
+    }
+
+    @Test
+    public void checkIfGetValOutToShowtoUserMethodRemovesZeroBeforeNumber() throws Exception {
+        assertNotEquals("04", getValOutToShowtoUser("4","0"));
+    }
+
+    @Test
+    public void checkIfGetValOutToShowtoUserMethodKeepsLastOperandShowed() throws Exception {
+        assertEquals("4", getValOutToShowtoUser("+","4"));
+    }
+
+    @Test
+    public void checkIfGetValOutToShowtoUserMethodAddZeroPointWhenEmpty() throws Exception {
+        assertEquals("0.", getValOutToShowtoUser(".","0"));
+    }
+
+
 }

@@ -30,49 +30,25 @@ public class Calculator {
                 stringBufOut.append("0");
                 break;
 
-            // In the case of the user enters the value 0 we have to check if the operand is not already null because it's useless to concatenate zeros
-            case "0":
-                if (stringInTextView.equals("0")) {
-                    stringBufOut.append(stringInTextView);
-                } else {
-                    stringBufOut.append(stringInTextView);
-                    stringBufOut.append(stringIn);
-                }
-                if (curOperand == 0) {
-                    valOperand1 = stringBufOut;
-                } else {
-                    valOperand2 = stringBufOut;
-                }
-                break;
-
             case "+":
-                curOperand = 1;
+                prepareOperator("addFunction");
                 stringBufOut.append("0");
-                operator.setLength(0);
-                operator.append("addFunction");
                 break;
 
             case "-":
-                curOperand = 1;
+                prepareOperator("minusFunction");
                 stringBufOut.append("0");
-                operator.setLength(0);
-                operator.append("minusFunction");
                 break;
 
             case "x":
-                curOperand = 1;
+                prepareOperator("multFunction");
                 stringBufOut.append("0");
-                operator.setLength(0);
-                operator.append("multFunction");
                 break;
 
             case "/":
-                curOperand = 1;
+                prepareOperator("divFunction");
                 stringBufOut.append("0");
-                operator.setLength(0);
-                operator.append("divFunction");
                 break;
-
 
             case "=":
                 curOperand = 0;
@@ -83,7 +59,7 @@ public class Calculator {
 
             case ".":
                 // if there is no character already typed before a point we have to a 0 before the point
-                if (stringInTextView == "0") {
+                if (stringInTextView.equals("0")) {
                     stringBufOut.append("0");
                     stringBufOut.append(stringIn);
                 } else {
@@ -174,6 +150,13 @@ public class Calculator {
             valOut = new String(Integer.toString(intPart));
         }
         return valOut;
+    }
+
+
+    static void prepareOperator(String functionName ) {
+        curOperand = 1;
+        operator.setLength(0);
+        operator.append(functionName);
     }
 
 }

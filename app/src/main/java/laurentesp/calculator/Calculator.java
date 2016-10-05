@@ -22,6 +22,7 @@ public class Calculator {
     // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new operand is written
     private static boolean takeStringIn = true;
 
+    public static final String errorString = "Error can't divide by zero";
 
     static String getValOutToShowtoUser(String stringIn, String stringInTextView) {
         StringBuffer stringBufOut = new StringBuffer("");
@@ -36,29 +37,19 @@ public class Calculator {
                 break;
 
             case "+":
-                // Test if we are already entered the second operand, in this case we have to show the result of the first operation
-                if (curOperand == 1) {
-                    stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
-                    valOperand1 = stringBufOut;
-                } else {
-                    stringBufOut.append(stringInTextView);
-                }
-                prepareOperator("addFunction");
+                stringBufOut = prepareOperator(stringInTextView, "addFunction");
                 break;
 
             case "-":
-                stringBufOut.append(stringInTextView);
-                prepareOperator("minusFunction");
+                stringBufOut = prepareOperator(stringInTextView, "minusFunction");
                 break;
 
             case "x":
-                stringBufOut.append(stringInTextView);
-                prepareOperator("multFunction");
+                stringBufOut = prepareOperator(stringInTextView, "multFunction");
                 break;
 
             case "/":
-                stringBufOut.append(stringInTextView);
-                prepareOperator("divFunction");
+                stringBufOut = prepareOperator(stringInTextView, "divFunction");
                 break;
 
             case "=":
@@ -121,34 +112,42 @@ public class Calculator {
     }
 
     static String getResultFromOperatorOnOperands(String operand1, String operand2, String operator) {
-        double valOperand1 = Double.valueOf(operand1);
-        double valOperand2 = Double.valueOf(operand2);
+        double valOperand1;
+        double valOperand2;
         double valOut = 0;
         boolean errorOnOperation = false;
         String stringOut;
-        switch (operator) {
-            case "addFunction":
-                valOut = valOperand1 + valOperand2;
-                break;
-            case "minusFunction":
-                valOut = valOperand1 - valOperand2;
-                break;
-            case "multFunction":
-                valOut = valOperand1 * valOperand2;
-                break;
-            case "divFunction":
-                if (valOperand2 == 0) {
-                    errorOnOperation = true;
-                } else {
-                    valOut = valOperand1 / valOperand2;
-                }
-                break;
-            default:
-                valOut = valOperand1;
+
+        if ((operand1.equals(errorString)) || (operand2.equals(errorString))) {
+            errorOnOperation = true;
+        } else {
+            valOperand1 = Double.valueOf(operand1);
+            valOperand2 = Double.valueOf(operand2);
+
+            switch (operator) {
+                case "addFunction":
+                    valOut = valOperand1 + valOperand2;
+                    break;
+                case "minusFunction":
+                    valOut = valOperand1 - valOperand2;
+                    break;
+                case "multFunction":
+                    valOut = valOperand1 * valOperand2;
+                    break;
+                case "divFunction":
+                    if (valOperand2 == 0) {
+                        errorOnOperation = true;
+                    } else {
+                        valOut = valOperand1 / valOperand2;
+                    }
+                    break;
+                default:
+                    valOut = valOperand1;
+            }
         }
 
         if (errorOnOperation) {
-            stringOut = new String("Error can't divide by zero");
+            stringOut = errorString;
         } else {
             stringOut = new String(removeFractionalPartFromDoubleIfNotNecessary(valOut));
         }
@@ -170,8 +169,15 @@ public class Calculator {
     }
 
 
-    static void prepareOperator(String functionName) {
-
+    static StringBuffer prepareOperator(String stringInTextView, String functionName) {
+        StringBuffer stringBufOut = new StringBuffer("");
+        // Test if we are already entered the second operand, in this case we have to show the result of the first operation
+        if (curOperand == 1) {
+            stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
+            valOperand1 = stringBufOut;
+        } else {
+            stringBufOut.append(stringInTextView);
+        }
 
         // Because we have entered an operator this means that we are entering the second operand
         curOperand = 1;
@@ -181,6 +187,7 @@ public class Calculator {
 
         // Put this flag to false will make a reset on the display when the user will enter the next operand
         takeStringIn = false;
+        return stringBufOut;
     }
 
 

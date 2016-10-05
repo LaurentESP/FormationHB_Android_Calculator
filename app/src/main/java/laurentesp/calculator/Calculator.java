@@ -8,21 +8,20 @@ import java.util.List;
  */
 
 public class Calculator {
-    //static List<StringBuffer> valOperand = new ArrayList<>();
 
-    static StringBuffer valOperand1 = new StringBuffer("0");
-    static StringBuffer valOperand2 = new StringBuffer("0");
+    // The 2 attributes valOperandX are used to keep the value of the operands in case of a change in an activity
+    private static StringBuffer valOperand1 = new StringBuffer("0");
+    private static StringBuffer valOperand2 = new StringBuffer("0");
+
+    // The attribute operator is used to keep the value of the operator in case of a change in a activity
+    private static StringBuffer operator = new StringBuffer("");
 
     // The attribute curOperand is used to determine during the calculation if the user is entering the first or the second operand
-    static int curOperand = 0;
-    static StringBuffer operator = new StringBuffer("");
+    private static int curOperand = 0;
 
-    // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new number is chosen
+    // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new operand is written
     private static boolean takeStringIn = true;
 
-    private static void setTakeStringIn(boolean takeStringIn) {
-        takeStringIn = takeStringIn;
-    }
 
     static String getValOutToShowtoUser(String stringIn, String stringInTextView) {
         StringBuffer stringBufOut = new StringBuffer("");
@@ -37,44 +36,50 @@ public class Calculator {
                 break;
 
             case "+":
+                // Test if we are already entered the second operand, in this case we have to show the result of the first operation
+                if (curOperand == 1) {
+                    stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
+                    valOperand1 = stringBufOut;
+                } else {
+                    stringBufOut.append(stringInTextView);
+                }
                 prepareOperator("addFunction");
-                stringBufOut.append(stringInTextView);
                 break;
 
             case "-":
-                prepareOperator("minusFunction");
                 stringBufOut.append(stringInTextView);
+                prepareOperator("minusFunction");
                 break;
 
             case "x":
-                prepareOperator("multFunction");
                 stringBufOut.append(stringInTextView);
+                prepareOperator("multFunction");
                 break;
 
             case "/":
-                prepareOperator("divFunction");
                 stringBufOut.append(stringInTextView);
+                prepareOperator("divFunction");
                 break;
 
             case "=":
                 curOperand = 0;
                 stringBufOut.setLength(0);
                 if (valOperand2.length() == 0) {
-                    // in case of the user click on an operator and equals just after, we have to clone the first operand
+                    //In case of the user clicks on an operator and clicks on equal just after, we have to clone the first operand
                     valOperand2 = valOperand1;
                 }
-                stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(),valOperand2.toString(),operator.toString()));
+                stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
                 valOperand1 = stringBufOut;
                 break;
 
             case ".":
-                // if there is no character already typed before a point we have to a 0 before the point
+                // If there is no character already typed before a point we have to put a 0 before the point
                 if (stringInTextView.equals("0")) {
                     stringBufOut.append("0");
                     stringBufOut.append(stringIn);
                 } else {
                     // There can't be two points in a Double
-                    if (!(stringInTextView.contains("."))){
+                    if (!(stringInTextView.contains("."))) {
                         stringBufOut.append(stringInTextView);
                         stringBufOut.append(stringIn);
                     } else {
@@ -116,7 +121,7 @@ public class Calculator {
     }
 
     static String getResultFromOperatorOnOperands(String operand1, String operand2, String operator) {
-        double valOperand1 =  Double.valueOf(operand1);
+        double valOperand1 = Double.valueOf(operand1);
         double valOperand2 = Double.valueOf(operand2);
         double valOut = 0;
         boolean errorOnOperation = false;
@@ -150,10 +155,10 @@ public class Calculator {
         return stringOut;
     }
 
-    static String removeFractionalPartFromDoubleIfNotNecessary(double valIn){
+    static String removeFractionalPartFromDoubleIfNotNecessary(double valIn) {
         double fractionalPart = valIn % 1;
         double integralPart = valIn - fractionalPart;
-        int intPart = (int)integralPart;
+        int intPart = (int) integralPart;
         String valOut;
 
         if ((valIn - integralPart) != 0.0) {
@@ -165,11 +170,18 @@ public class Calculator {
     }
 
 
-    static void prepareOperator(String functionName ) {
+    static void prepareOperator(String functionName) {
+
+
+        // Because we have entered an operator this means that we are entering the second operand
         curOperand = 1;
+
         operator.setLength(0);
         operator.append(functionName);
+
+        // Put this flag to false will make a reset on the display when the user will enter the next operand
         takeStringIn = false;
     }
+
 
 }

@@ -21,5 +21,8 @@ public class MainActivity extends AppCompatActivity {
         final TextView textView = (TextView) findViewById(R.id.text_view_0);
         String butClicked = view.getTag().toString();
         textView.setText(Calculator.getValOutToShowtoUser(butClicked, textView.getText().toString()));
+        //Todo : Put the switch case in the activity because the buttons tags are UX.
+        // We have to call some methods of Calculator in each case
+
     }
 }

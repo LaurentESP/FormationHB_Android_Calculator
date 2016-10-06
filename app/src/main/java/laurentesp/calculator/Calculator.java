@@ -17,10 +17,10 @@ public class Calculator {
     private static int curOperand = 0;
 
     // This attribute is used to clear the StringBuffer for the display after the choice of an operator as soon as a new operand is written
-    private static boolean takeStringIn = true;
+    private static boolean showStringIn = true;
 
-    // This attribute is used to determine if an operator has already been chosen
-    private static boolean operatorJustChosen = false;
+    // This attribute is used to determine if an operator is pending
+    private static boolean pendingOperator = false;
 
     // Attribute used to clear the calculation after an equals if no operator chosen just after the equals
     private static boolean equalsWaitingForNewOperator = false;
@@ -85,8 +85,8 @@ public class Calculator {
             default:
                 // The default case is for 0..9 buttons
                 // Requirement, if a 0 has been entered previously we won't show it
-                // If flag takeStringIn is false, this means that we should not show the stringIn
-                if ((stringInTextView.equals("0")) || (!(takeStringIn)) || (equalsWaitingForNewOperator)) {
+                // If flag showStringIn is false, this means that we should not show the stringIn
+                if ((stringInTextView.equals("0")) || (!(showStringIn)) || (equalsWaitingForNewOperator)) {
                     stringBufOut.append(stringIn);
                     equalsWaitingForNewOperator = false;
                 } else {
@@ -94,8 +94,8 @@ public class Calculator {
                     stringBufOut.append(stringIn);
                 }
 
-                takeStringIn = true;
-                operatorJustChosen = false;
+                showStringIn = true;
+                pendingOperator = false;
 
                 if (curOperand == 0) {
                     valOperand1 = stringBufOut;
@@ -181,7 +181,7 @@ public class Calculator {
     private static StringBuffer prepareOperator(String stringInTextView, String functionName) {
         StringBuffer stringBufOut = new StringBuffer("");
         // Test if we are already entered the second operand, in this case we have to show the result of the first operation
-        if ((curOperand == 1) && (!(operatorJustChosen))) {
+        if ((curOperand == 1) && (!(pendingOperator))) {
             stringBufOut.append(getResultFromOperatorOnOperands(valOperand1.toString(), valOperand2.toString(), operator.toString()));
             valOperand1 = stringBufOut;
         } else {
@@ -193,10 +193,10 @@ public class Calculator {
 
         operator.setLength(0);
         operator.append(functionName);
-        operatorJustChosen = true;
+        pendingOperator = true;
 
         // Put this flag to false will make a reset on the display when the user will enter the next operand
-        takeStringIn = false;
+        showStringIn = false;
         return stringBufOut;
     }
 

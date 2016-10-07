@@ -207,7 +207,7 @@
         android:weightSum="4"
         tools:context="laurentesp.calculator.MainActivity">
         <Button
-            android:id="@+id/button_eq"
+            android:id="@+id/button_Eq"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:tag="="

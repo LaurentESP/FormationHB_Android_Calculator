@@ -181,7 +181,7 @@
             android:text="0"
             android:onClick="clickMeth"/>
         <Button
-            android:id="@+id/button_Point"
+            android:id="@+id/button_Dot"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

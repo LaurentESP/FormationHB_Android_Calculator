@@ -1,5 +1,8 @@
 package laurentesp.calculator;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 /**
  * Created by SOEOSSA on 04/10/2016.
  */
@@ -25,7 +28,13 @@ public class Calculator {
     // Attribute used to clear the calculation after an equals if no operator chosen just after the equals
     private static boolean equalsWaitingForNewOperator = false;
 
-    private static final String errorString = "Error can't divide by zero";
+    private static final String errorString = "Error cannot divide by zero";
+
+    private Context calcContext;
+
+    public Calculator(Context context) {
+        calcContext = context;
+    }
 
     static String getValOutToShowtoUser(String stringIn, String stringInTextView) {
         StringBuffer stringBufOut = new StringBuffer("");
@@ -165,6 +174,8 @@ public class Calculator {
 
         if (errorOnOperation) {
             stringOut = errorString;
+            //stringOut =
+            //stringOut = calcContext.getString(R.string.error_div_by_zero);
         } else {
             stringOut = removeFractionalPartFromDoubleIfNotNecessary(valOut);
         }

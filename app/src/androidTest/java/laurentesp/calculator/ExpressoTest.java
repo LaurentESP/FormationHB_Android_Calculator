@@ -1,7 +1,9 @@
 package laurentesp.calculator;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,6 +23,12 @@ public class ExpressoTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
+
+    @Before
+    public void initCalc(){
+        // Launch before each tests
+        onView(withId(R.id.button_C)).perform(click());
+    }
 
     @Test
     public void checkIfActivityIsVisible(){
@@ -109,26 +117,158 @@ public class ExpressoTest {
 
     @Test
     public void checkIfAtLaunchZeroIsDisplayed() {
-        // Press the button.
         onView(withId(R.id.text_view_0)).check(matches(withText("0")));
     }
 
     @Test
     public void checkIfThereIsNoZeroBeforeFirstNumber() {
-        // Press the button.
-        onView(withId(R.id.button_C)).perform(click());
         onView(withId(R.id.button_1)).perform(click());
         onView(withId(R.id.text_view_0)).check(matches(withText("1")));
     }
 
     @Test
     public void checkIfNumberConcatenates() {
-        // Press the button.
-        onView(withId(R.id.button_C)).perform(click());
         onView(withId(R.id.button_2)).perform(click());
         onView(withId(R.id.button_1)).perform(click());
         onView(withId(R.id.text_view_0)).check(matches(withText("21")));
     }
+
+    @Test
+    public void checkIfOperatorDoesNotChangeTheDisplay() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("21")));
+    }
+
+    @Test
+    public void checkIfAfterOperatorNewOperandIsReset() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_3)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("3")));
+    }
+
+    @Test
+    public void checkIfAddIsOk() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_4)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("25")));
+    }
+
+    @Test
+    public void checkIfSubIsOk() {
+        // Press the button.
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Sub)).perform(click());
+        onView(withId(R.id.button_4)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("17")));
+    }
+
+    @Test
+    public void checkIfDivIsOk() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Div)).perform(click());
+        onView(withId(R.id.button_3)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("7")));
+    }
+
+    @Test
+    public void checkIfMultIsOk() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Mult)).perform(click());
+        onView(withId(R.id.button_3)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("63")));
+    }
+
+    @Test
+    public void checkIfOperatorChangedIsOk() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Mult)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_3)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("24")));
+    }
+
+    @Test
+    public void checkIfOperandIsEmptyBeforeDot() {
+        onView(withId(R.id.button_Dot)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("0.")));
+    }
+
+    @Test
+    public void checkIfResultIsDisplayedWhenNewOperatorIsClicked() {
+        onView(withId(R.id.button_2)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_3)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("24")));
+    }
+
+    @Test
+    public void checkIfResultIsErrorWhenDivideByZero() {
+        onView(withId(R.id.button_8)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Div)).perform(click());
+        onView(withId(R.id.button_0)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText(InstrumentationRegistry.getTargetContext().getString(R.string.error_div_by_zero))));
+    }
+
+    @Test
+    public void checkIfOldResultIsErrorThenResultIsError() {
+        onView(withId(R.id.button_8)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Div)).perform(click());
+        onView(withId(R.id.button_0)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText(InstrumentationRegistry.getTargetContext().getString(R.string.error_div_by_zero))));
+    }
+
+    @Test
+    public void checkOnlyOneDotIfMultipleClicksOnDot() {
+        onView(withId(R.id.button_8)).perform(click());
+        onView(withId(R.id.button_Dot)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Dot)).perform(click());
+        onView(withId(R.id.button_Dot)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("8.1")));
+    }
+
+    @Test
+    public void checkDuplicateSecondOperand() {
+        onView(withId(R.id.button_8)).perform(click());
+        onView(withId(R.id.button_Dot)).perform(click());
+        onView(withId(R.id.button_1)).perform(click());
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("16.2")));
+    }
+
+    @Test
+    public void checkIfNoFirstOperand() {
+        onView(withId(R.id.button_Add)).perform(click());
+        onView(withId(R.id.button_4)).perform(click());
+        onView(withId(R.id.button_Eq)).perform(click());
+        onView(withId(R.id.text_view_0)).check(matches(withText("4")));
+    }
+
 
 
 }

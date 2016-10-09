@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Calculator</string>
     <string name="error_div_by_zero">Error cannot divide by zero</string>
+    <string name="initial_value_displayed">0</string>
 </resources>

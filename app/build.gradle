@@ -1,8 +1,5 @@
-plugins {
-    id "org.sonarqube" version "2.1"
-}
-
 apply plugin: 'com.android.application'
+apply plugin: 'sonar-runner'
 
 android {
     compileSdkVersion 24

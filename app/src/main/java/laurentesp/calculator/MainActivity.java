@@ -22,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView textView = (TextView) findViewById(R.id.text_view_0);
         if (registerDisplay == null) {
-            putInitialValueinCurrentDisplay();
+            textView.setText(getString(R.string.initial_value_displayed));
+            //putInitialValueinCurrentDisplay();
+        } else {
+            textView.setText(registerDisplay);
         }
-        textView.setText(registerDisplay);
+
     }
 
     public void clickMeth(View view){
@@ -39,12 +42,13 @@ public class MainActivity extends AppCompatActivity {
         String valFromTextView = textView.getText().toString();
         switch (keyClicked){
             case "C":
-                putInitialValueinCurrentDisplay();
+                //putInitialValueinCurrentDisplay();
+                registerDisplay = "";
                 calculator.clearCalc();
-                stringToReturn = registerDisplay;
+                stringToReturn = getString(R.string.initial_value_displayed);
                 break;
             case ".":
-                stringToReturn = concatenateDot(registerDisplay);
+                stringToReturn = concatenateDot(valFromTextView);
                 registerDisplay = stringToReturn;
                 break;
                 // Do not register the display in the case of an operator because after we have to enter a new operand
@@ -52,10 +56,16 @@ public class MainActivity extends AppCompatActivity {
             case "-":
             case "/":
             case "x":
+                valueFromCalc = calculator.operateOrPrepareOperation(Double.valueOf(registerDisplay),keyClicked);
+                stringToReturn = removeFractionalPartFromDoubleIfNotNecessary(valueFromCalc);
+                //putInitialValueinCurrentDisplay();
+                registerDisplay = "";
+                break;
             case "=":
                 valueFromCalc = calculator.operateOrPrepareOperation(Double.valueOf(valFromTextView),keyClicked);
                 stringToReturn = removeFractionalPartFromDoubleIfNotNecessary(valueFromCalc);
-                putInitialValueinCurrentDisplay();
+                //putInitialValueinCurrentDisplay();
+                registerDisplay = "";
                 break;
             default:
                 stringToReturn = concatenateTwoNumbers(registerDisplay,keyClicked);
@@ -70,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String concatenateTwoNumbers(String firstStr, String secStr){
         // No need to concatenates zeroes before numbers
-        // Need to concatenate the zero with another value ONLY when the other value is a Dot
-        if (firstStr.equals("0")){
+        if ((firstStr.equals("0")) || (firstStr.isEmpty())){
             return secStr;
         } else {
             return firstStr + secStr;

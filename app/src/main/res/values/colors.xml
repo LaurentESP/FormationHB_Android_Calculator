@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_Grey_Dark">#444444</color>
     <color name="color_Grey">#DDDDDD</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="magenta">#FF00FF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#00FF00</color>
 </resources>

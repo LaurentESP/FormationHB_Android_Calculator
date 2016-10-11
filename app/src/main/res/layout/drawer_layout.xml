@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/left_drawer"
+    android:layout_width="240dp"
+    android:layout_gravity="start"
+    android:layout_height="match_parent"
+    android:weightSum="5"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/color_Grey"
+        android:textSize="25sp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Choose your theme"/>
+    <Button
+        android:id="@+id/button_theme_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="theme1"
+        android:text="Theme 1"
+        android:background="@color/cyan"/>
+    <Button
+        android:id="@+id/button_theme_2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="theme2"
+        android:text="Theme 2"
+        android:background="@color/magenta"/>
+    <Button
+        android:id="@+id/button_theme_3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="theme3"
+        android:text="Theme 3"
+        android:background="@color/yellow"/>
+    <Button
+        android:id="@+id/button_theme_4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:tag="theme1"
+        android:text="Theme 4"
+        android:background="@color/green"/>
+
+</LinearLayout>

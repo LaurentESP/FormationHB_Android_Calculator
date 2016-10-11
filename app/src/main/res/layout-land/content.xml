@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="6"
+    tools:context="laurentesp.calculator.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/activity_line_0"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_Grey_Dark"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/text_view_0"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="right|center"
+            android:text="0"
+            android:textColor="@color/color_Grey"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/button_C"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="clickMeth"
+            android:tag="C"
+            android:text="C" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/base_line"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        tools:context="laurentesp.calculator.MainActivity">
+
+        <fragment
+            android:id="@+id/frag_scient"
+            android:name="laurentesp.calculator.ScientFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"></fragment>
+
+        <fragment
+            android:id="@+id/frag_simp"
+            android:name="laurentesp.calculator.SimpleCalcFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"></fragment>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_Eq"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="clickMeth"
+        android:tag="="
+        android:text="=" />
+
+</LinearLayout>

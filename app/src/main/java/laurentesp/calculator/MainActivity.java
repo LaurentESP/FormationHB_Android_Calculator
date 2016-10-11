@@ -1,7 +1,12 @@
 package laurentesp.calculator;
 
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
     private static String registerDisplay = "";
     private static boolean operationPending;
     private static boolean newValEntered = false;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public MainActivity() {
         this.calculator = new Calculator();
@@ -23,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUiMain();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
     }
 
     @Override
@@ -64,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
     @Override
     public void onClick(View v) {
         String textViewVal = textView.getText().toString();
+        View view = findViewById(R.id.activity_main);
+
         String calcStringVal;
         switch (v.getId()){
             case R.id.button_C:
@@ -76,6 +87,27 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
                 newValEntered = false;
                 textView.setText(calcStringVal);
                 break;
+
+            case R.id.button_theme_1:
+                int colorCyan = ContextCompat.getColor(getBaseContext(),R.color.cyan);
+                view.setBackgroundColor(colorCyan);
+                break;
+
+            case R.id.button_theme_2:
+                int colorMagenta = ContextCompat.getColor(getBaseContext(),R.color.magenta);
+                view.setBackgroundColor(colorMagenta);
+                break;
+
+            case R.id.button_theme_3:
+                int colorYellow = ContextCompat.getColor(getBaseContext(),R.color.yellow);
+                view.setBackgroundColor(colorYellow);
+                break;
+
+            case R.id.button_theme_4:
+                int colorGreen = ContextCompat.getColor(getBaseContext(),R.color.green);
+                view.setBackgroundColor(colorGreen);
+                break;
+
             default:
 
         }
@@ -114,78 +146,14 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
         buttonC.setOnClickListener(this);
         Button buttonEq = (Button) findViewById(R.id.button_Eq);
         buttonEq.setOnClickListener(this);
+        Button buttonT1 = (Button) findViewById(R.id.button_theme_1);
+        buttonT1.setOnClickListener(this);
+        Button buttonT2 = (Button) findViewById(R.id.button_theme_2);
+        buttonT2.setOnClickListener(this);
+        Button buttonT3 = (Button) findViewById(R.id.button_theme_3);
+        buttonT3.setOnClickListener(this);
+        Button buttonT4 = (Button) findViewById(R.id.button_theme_4);
+        buttonT4.setOnClickListener(this);
     }
 
-
-
-    /*
-
-    public void click(View view){
-        final TextView textView = (TextView) findViewById(R.id.text_view_0);
-        //String butClicked = view.getTag().toString();
-        String butClicked = onButtonClicked(view);
-        textView.setText(updateDisplay(butClicked,textView));
-    }
-
-    private String updateDisplay(String keyClicked, TextView textView){
-        String stringToReturn;
-        Double valueFromCalc = 0d;
-        String valFromTextView = textView.getText().toString();
-        switch (keyClicked){
-            case "C":
-                putInitialValueinCurrentDisplay();
-                calculator.clearCalc();
-                stringToReturn = registerDisplay;
-                break;
-            case ".":
-                stringToReturn = concatenateDot(registerDisplay);
-                registerDisplay = stringToReturn;
-                break;
-                // Do not register the display in the case of an operator because after we have to enter a new operand
-            case "+":
-            case "-":
-            case "/":
-            case "x":
-            case "=":
-                valueFromCalc = calculator.operateOrPrepareOperation(Double.valueOf(valFromTextView),keyClicked);
-                stringToReturn = removeFractionalPartFromDoubleIfNotNecessary(valueFromCalc);
-                putInitialValueinCurrentDisplay();
-                break;
-            default:
-                stringToReturn = concatenateTwoNumbers(registerDisplay,keyClicked);
-                registerDisplay = stringToReturn;
-        }
-        return stringToReturn;
-    }
-
-    public void putInitialValueinCurrentDisplay(){
-        registerDisplay = getString(R.string.initial_value_displayed);
-    }
-
-    public String concatenateTwoNumbers(String firstStr, String secStr){
-        // No need to concatenates zeroes before numbers
-        // Need to concatenate the zero with another value ONLY when the other value is a Dot
-        if (firstStr.equals("0")){
-            return secStr;
-        } else {
-            return firstStr + secStr;
-        }
-    }
-
-    public String concatenateDot(String stringDisplayed) {
-        String stringToReturn;
-        if (stringDisplayed.contains(".")){
-            stringToReturn = stringDisplayed;
-
-        } else {
-            stringToReturn = stringDisplayed + ".";
-        }
-        return stringToReturn;
-    }
-
-    static String removeFractionalPartFromDoubleIfNotNecessary(double valIn) {
-        String valOut;
-        valOut = Double.toString(valIn).replaceAll("\\.0*$", "");
-        return valOut;
-    }*/
 }

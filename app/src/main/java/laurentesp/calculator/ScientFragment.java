@@ -65,41 +65,6 @@ public class ScientFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        /*switch (v.getId()){
-            case R.id.button_Sin :
-                break;
-            case R.id.button_asin :
-                break;
-            case R.id.button_Cos :
-                break;
-            case R.id.button_acos :
-                break;
-            case R.id.button_Tan :
-                break;
-            case R.id.button_atan :
-                break;
-            case R.id.button_log :
-                break;
-            case R.id.button_ln :
-                break;
-            case R.id.button_Sq :
-                break;
-            case R.id.button_sqrt :
-                break;
-            case R.id.button_pow_3 :
-                break;
-            case R.id.button_pow_10 :
-                break;
-            case R.id.button_x_pow_y :
-                break;
-            case R.id.button_inv_x :
-                break;
-            case R.id.button_exp :
-                break;
-            case R.id.button_pm :
-                break;
-            default:
-        }*/
         parent.setOperation(v.getTag().toString());
     }
 

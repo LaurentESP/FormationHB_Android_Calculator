@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
     private Calculator calculator;
     private static String registerDisplay = "";
     private static boolean operationPending;
+    private static boolean newValEntered = false;
 
     public MainActivity() {
         this.calculator = new Calculator();
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
             registerDisplay += stringIn;
         }
         textView.setText(registerDisplay);
+        newValEntered = true;
         return registerDisplay;
     }
 
@@ -44,50 +46,18 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
             registerDisplay = textViewVal + ".";
         }
         textView.setText(registerDisplay);
+        newValEntered = true;
         return registerDisplay;
     }
 
+    @Override
     public String setOperation(String myString){
-        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), myString);
+        String textViewVal = textView.getText().toString();
+        Double operationResult = calculator.prepareOperationOrOperates(registerDisplay, newValEntered, myString);
         String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
         textView.setText(valOp);
         registerDisplay = "";
-        return valOp;
-    }
-
-    @Override
-    public String addFunction() {
-        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Add");
-        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
-        registerDisplay = "";
-        textView.setText(valOp);
-        return valOp;
-    }
-
-    @Override
-    public String subFunction() {
-        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Sub");
-        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
-        registerDisplay = "";
-        textView.setText(valOp);
-        return valOp;
-    }
-
-    @Override
-    public String multFunction() {
-        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Mult");
-        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
-        registerDisplay = "";
-        textView.setText(valOp);
-        return valOp;
-    }
-
-    @Override
-    public String divFunction() {
-        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Div");
-        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
-        registerDisplay = "";
-        textView.setText(valOp);
+        newValEntered = false;
         return valOp;
     }
 
@@ -102,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
 
             case R.id.button_Eq:
                 calcStringVal = removeFractionalPartFromDoubleIfNotNecessary(calculator.eqCalc(Double.valueOf(textViewVal)));
+                registerDisplay = "";
+                newValEntered = false;
                 textView.setText(calcStringVal);
                 break;
             default:

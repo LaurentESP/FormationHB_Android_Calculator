@@ -80,16 +80,16 @@ public class SimpleCalcFragment extends Fragment implements View.OnClickListener
                 parent.concatenatesDot();
                 break;
             case R.id.button_Add:
-                parent.addFunction();
+                parent.setOperation("Add");
                 break;
             case R.id.button_Sub:
-                parent.subFunction();
+                parent.setOperation("Sub");
                 break;
             case R.id.button_Mult:
-                parent.multFunction();
+                parent.setOperation("Mult");
                 break;
             case R.id.button_Div:
-                parent.divFunction();
+                parent.setOperation("Div");
                 break;
             default :
                 parent.concatenatesNumber(v.getTag().toString());

@@ -284,7 +284,11 @@ public class Calculator {
         COS,SIN, TAN, SQ, ASIN, ACOS, ATAN, Pow3, eX, pow10,invX, Ln, Log, sqrt, pm
     }
 
-    public Double prepareOperationOrOperates(Double valIn, String chosenOperator) {
+    public Double prepareOperationOrOperates(String valIn, Boolean isNewVal, String chosenOperator) {
+        if (isNewVal) {
+            returnVal = 0d;
+            curOperator = "";
+        }
         switch (chosenOperator) {
             case "COS" :
             case "SIN" :
@@ -302,14 +306,24 @@ public class Calculator {
             case "sqrt" :
             case "pm" :
                 curOperator =  chosenOperator;
-                returnVal = eqCalc(valIn);
+                if (valIn.isEmpty()) {
+                    returnVal = eqCalc(returnVal);
+                } else {
+                    returnVal = eqCalc(Double.valueOf(valIn));
+                }
                 break;
 
             default:
                     if (curOperator.isEmpty()){
-                        returnVal = valIn;
+                        if (valIn.isEmpty()) {
+                            returnVal = 0d;
+                        } else {
+                            returnVal = Double.valueOf(valIn);
+                        }
                     } else {
-                        returnVal = eqCalc(valIn);
+                        if (!(valIn.isEmpty())) {
+                            returnVal = eqCalc(Double.valueOf(valIn));
+                        }
                     }
                     curOperator =  chosenOperator;
         }

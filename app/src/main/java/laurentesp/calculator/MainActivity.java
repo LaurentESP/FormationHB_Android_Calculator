@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
-public class MainActivity extends AppCompatActivity implements SimpleCalcFragmentCallBack, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements SimpleCalcFragmentCallBack, View.OnClickListener, ScientFragmentCallBack {
 
     private Calculator calculator;
     private static String registerDisplay = "";
@@ -47,12 +47,48 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
         return registerDisplay;
     }
 
+    public String setOperation(String myString){
+        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), myString);
+        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
+        textView.setText(valOp);
+        registerDisplay = "";
+        return valOp;
+    }
+
     @Override
     public String addFunction() {
-        String valSum = removeFractionalPartFromDoubleIfNotNecessary(calculator.addCalc(Double.valueOf(registerDisplay)));
+        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Add");
+        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
         registerDisplay = "";
-        textView.setText(valSum);
-        return valSum;
+        textView.setText(valOp);
+        return valOp;
+    }
+
+    @Override
+    public String subFunction() {
+        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Sub");
+        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
+        registerDisplay = "";
+        textView.setText(valOp);
+        return valOp;
+    }
+
+    @Override
+    public String multFunction() {
+        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Mult");
+        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
+        registerDisplay = "";
+        textView.setText(valOp);
+        return valOp;
+    }
+
+    @Override
+    public String divFunction() {
+        Double operationResult = calculator.prepareOperationOrOperates(Double.valueOf(registerDisplay), "Div");
+        String valOp = removeFractionalPartFromDoubleIfNotNecessary(operationResult);
+        registerDisplay = "";
+        textView.setText(valOp);
+        return valOp;
     }
 
     @Override
@@ -107,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements SimpleCalcFragmen
         Button buttonEq = (Button) findViewById(R.id.button_Eq);
         buttonEq.setOnClickListener(this);
     }
+
 
 
     /*

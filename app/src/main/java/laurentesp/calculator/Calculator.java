@@ -280,17 +280,44 @@ public class Calculator {
         curOperator = "";
     }
 
-    public Double addCalc (Double valIn) {
-        if (curOperator.isEmpty()){
-            returnVal = valIn;
-        } else {
-            returnVal = eqCalc(valIn);
+    public enum operationWithOneOperand {
+        COS,SIN, TAN, SQ, ASIN, ACOS, ATAN, Pow3, eX, pow10,invX, Ln, Log, sqrt, pm
+    }
+
+    public Double prepareOperationOrOperates(Double valIn, String chosenOperator) {
+        switch (chosenOperator) {
+            case "COS" :
+            case "SIN" :
+            case "TAN" :
+            case "SQ" :
+            case "ASIN" :
+            case "ACOS" :
+            case "ATAN" :
+            case "Pow3" :
+            case "eX" :
+            case "pow10" :
+            case "invX" :
+            case "Ln" :
+            case "Log":
+            case "sqrt" :
+            case "pm" :
+                curOperator =  chosenOperator;
+                returnVal = eqCalc(valIn);
+                break;
+
+            default:
+                    if (curOperator.isEmpty()){
+                        returnVal = valIn;
+                    } else {
+                        returnVal = eqCalc(valIn);
+                    }
+                    curOperator =  chosenOperator;
         }
-        curOperator =  "Add";
       return returnVal;
     }
 
     public Double eqCalc(Double valIn){
+
         switch (curOperator) {
             case "Add":
                 returnVal += valIn;
@@ -308,9 +335,60 @@ public class Calculator {
                 returnVal *= valIn;
             break;
 
+            case "COS" :
+                returnVal = Math.cos(valIn);
+                break;
+
+            case "SIN" :
+                returnVal = Math.sin(valIn);
+                break;
+
+            case "TAN" :
+                returnVal = Math.tan(valIn);
+                break;
+            case "SQ" :
+                returnVal = valIn*valIn;
+                break;
+            case "ASIN" :
+                returnVal = Math.asin(valIn);
+                break;
+            case "ACOS" :
+                returnVal = Math.acos(valIn);
+                break;
+            case "ATAN" :
+                returnVal = Math.atan(valIn);
+                break;
+            case "Pow3" :
+                returnVal = Math.pow(valIn,3);
+                break;
+            case "eX" :
+                returnVal = Math.exp(valIn);
+                break;
+            case "pow10" :
+                returnVal = Math.pow(10,valIn);
+                break;
+            case "invX" :
+                returnVal = 1/valIn;
+                break;
+            case "Ln" :
+                returnVal = Math.log(valIn);
+                break;
+            case "Log":
+                returnVal = Math.log10(valIn);
+                break;
+            case "sqrt" :
+                returnVal = Math.sqrt(valIn);
+                break;
+            case "pm":
+                returnVal = - valIn;
+                break;
+            case "XPowY":
+                returnVal = Math.pow(returnVal,valIn);
+                break;
             default:
                 returnVal = valIn;
         }
+
         return returnVal;
     }
 }

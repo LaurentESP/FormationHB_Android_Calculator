@@ -10,4 +10,7 @@ public interface SimpleCalcFragmentCallBack {
     public String concatenatesDot();
     public String concatenatesNumber(String string);
     public String addFunction();
+    public String multFunction();
+    public String divFunction();
+    public String subFunction();
 }

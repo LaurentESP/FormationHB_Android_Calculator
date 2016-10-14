@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "laurentesp.calculator"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -33,3 +33,82 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+// First test failure should not stop build on CI
+if (!ext.has('ignoreTestFailures')) {
+    ext.ignoreTestFailures = true
+}
+project.gradle.taskGraph.whenReady {
+    connectedDebugAndroidTest {
+        ignoreFailures = project.ext.ignoreTestFailures
+    }
+    testDebugUnitTest {
+        ignoreFailures = project.ext.ignoreTestFailures
+    }
+   /* testReleaseUnitTest {
+        ignoreFailures = project.ext.ignoreTestFailures
+    }*/
+}
+
+// Jacoco coverage reports for standard unit tests
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+}
+task createDebugUnitTestCoverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+    group = "Reporting"
+    description = "Generate Jacoco test coverage report from data gathered during unit tests"
+    reports {
+        xml {
+            enabled = true
+            destination "${buildDir}/reports/unit-coverage/debug/report.xml"
+        }
+        html {
+            enabled = true
+            destination "${buildDir}/reports/unit-coverage/debug/"
+        }
+    }
+    sourceDirectories = getSourceDirs()
+    classDirectories = getClassDirs()
+    executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+}
+task createFullDebugCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'connectedDebugAndroidTest']) {
+    group = "Reporting"
+    description = "Generate full Jacoco test coverage report"
+    reports {
+        xml {
+            enabled = true
+            destination "${buildDir}/reports/full-coverage/debug/report.xml"
+        }
+        html {
+            enabled = true
+            destination "${buildDir}/reports/full-coverage/debug/"
+        }
+    }
+    sourceDirectories = getSourceDirs()
+    classDirectories = getClassDirs()
+    executionData = files("${buildDir}/outputs/code-coverage/connected/coverage.ec", "${buildDir}/jacoco/testDebugUnitTest.exec")
+}
+
+def getSourceDirs() {
+    files([
+            'src/main/java',
+            'src/debug/java'
+    ])
+}
+def getClassDirs() {
+    fileTree(
+            dir: "${buildDir}/intermediates/classes/debug",
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*',
+                       '**/*$$*', // Jacoco can not handle several "$" in class name.
+                       '**/*$ViewInjector*.*',
+                       '**/*$ViewBinder*.*',
+                       '**/*$Lambda$*.*', // Jacoco can not handle several "$" in class name.
+                       '**/*Dagger*.*', // Dagger auto-generated code.
+                       '**/*MembersInjector*.*', // Dagger auto-generated code.
+                       '**/*_Provide*Factory*.*', // Dagger auto-generated code.
+                       'com/android/**/*.class']
+    )
+}

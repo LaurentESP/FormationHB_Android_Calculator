@@ -8,25 +8,39 @@ import static org.junit.Assert.*;
  */
 
 public class UIUnitTest {
-    MainActivity mainActivity = new MainActivity();
+    Calculator testMyCalculator = new Calculator();
 
     @Test
-    public void checkIfConcatenationOfTwoNumbersIsOK() throws Exception{
-        assertEquals("31",mainActivity.concatenateTwoNumbers("3","1"));
+    public void checkIfClearIsOkOnOperator (){
+        testMyCalculator.clearCalc();
+        assertEquals("",testMyCalculator.getCurOperator());
     }
 
     @Test
-    public void checkIfConcatenationOfTwoNumbersWithFirstNumberIsZeroIsOK() throws Exception{
-        assertEquals("1",mainActivity.concatenateTwoNumbers("0","1"));
+    public void checkIfClearIsOkOnOperand (){
+        testMyCalculator.clearCalc();
+        assertEquals(0d,testMyCalculator.getReturnVal(),0d);
     }
 
     @Test
-    public void checkIfConcatenationWhenNoDotInFirstString() throws Exception{
-        assertEquals("1.",mainActivity.concatenateDot("1"));
+    public void checkIfClearIsOkOnOperatorWhenOperatorHasBeenSetBefore (){
+        testMyCalculator.setCurOperator("Add");
+        testMyCalculator.clearCalc();
+        assertEquals("",testMyCalculator.getCurOperator());
     }
 
     @Test
-    public void checkIfNotConcatenationIsDoneWhenDotAlreadyExistsInString() throws Exception{
-        assertEquals("1.345",mainActivity.concatenateDot("1.345"));
+    public void checkIfClearIsOkOnOperandWhenOperandHasBeenSetBefore (){
+        testMyCalculator.setReturnVal(45d);
+        testMyCalculator.clearCalc();
+        assertEquals(0d,testMyCalculator.getReturnVal(),0d);
     }
+
+    @Test
+    public void checkIfAddIsOK(){
+        testMyCalculator.setCurOperator("Add");
+        testMyCalculator.clearCalc();
+        assertEquals(3d, testMyCalculator.eqCalc(3d),0d);
+    }
+
 }
